@@ -3,7 +3,7 @@ package com.example.chen.realtime.di.module;
 import android.content.Context;
 
 import com.example.chen.realtime.App;
-import com.example.chen.realtime.http.converter.APIService;
+import com.example.chen.realtime.http.APIService;
 
 import java.util.concurrent.TimeUnit;
 

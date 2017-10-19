@@ -5,6 +5,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 
 import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
@@ -18,7 +19,8 @@ public final class GsonResponseBodyConverter<T> implements Converter<ResponseBod
         this.adapter = adapter;
     }
 
-    @Override public T convert(ResponseBody value) throws IOException {
+    @Override
+    public T convert(ResponseBody value) throws IOException {
 
         JsonReader jsonReader = gson.newJsonReader(value.charStream());
         try {
