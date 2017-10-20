@@ -2,6 +2,11 @@ package com.example.chen.realtime.http;
 
 import com.example.chen.realtime.bean.AppStart;
 import com.example.chen.realtime.bean.LiveCategory;
+import com.example.chen.realtime.bean.LiveListResult;
+import com.example.chen.realtime.bean.Recommend;
+import com.example.chen.realtime.bean.Room;
+import com.example.chen.realtime.bean.SearchRequestBody;
+import com.example.chen.realtime.bean.SearchResult;
 
 import java.util.List;
 

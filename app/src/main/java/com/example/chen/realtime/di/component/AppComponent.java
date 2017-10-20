@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.example.chen.realtime.App;
 import com.example.chen.realtime.di.module.AppModule;
-import com.example.chen.realtime.http.converter.APIService;
+import com.example.chen.realtime.http.APIService;
 
 import javax.inject.Singleton;
 
