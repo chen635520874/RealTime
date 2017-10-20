@@ -44,7 +44,21 @@ public class AppStart {
     @SerializedName("app-focus")
     private List<Banner> banners;
 
+    public List<AndroidstartBean> getAndroidstart() {
+        return androidstart;
+    }
 
+    public void setAndroidstart(List<AndroidstartBean> androidstart) {
+        this.androidstart = androidstart;
+    }
+
+    public List<Banner> getBanners() {
+        return banners;
+    }
+
+    public void setBanners(List<Banner> banners) {
+        this.banners = banners;
+    }
 
     public static class AndroidstartBean{
 
