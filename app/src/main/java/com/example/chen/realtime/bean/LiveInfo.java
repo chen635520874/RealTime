@@ -1,5 +1,7 @@
 package com.example.chen.realtime.bean;
 
+import com.example.chen.realtime.util.DecimalFormatUtil;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -193,6 +195,21 @@ public class LiveInfo {
     public void setView(String view) {
         this.view = view;
     }
+
+    public String getViews() {
+        try{
+            int views = Integer.parseInt(view);
+
+            return DecimalFormatUtil.formatW(views);
+        }catch (Exception e){
+
+        }
+
+        return view;
+    }
+
+
+
     public String getStatus() {
         return this.status;
     }
@@ -319,5 +336,6 @@ public class LiveInfo {
     public void setLove_cover(String love_cover) {
         this.love_cover = love_cover;
     }
+
 
 }

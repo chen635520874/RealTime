@@ -1,6 +1,8 @@
 package com.example.chen.realtime.bean;
 
 
+import com.example.chen.realtime.util.DecimalFormatUtil;
+
 import java.util.List;
 
 /**
@@ -334,6 +336,20 @@ public class Recommend {
             public void setView(String view) {
                 this.view = view;
             }
+
+
+            public String getViews() {
+                try{
+                    int views = Integer.parseInt(view);
+
+                    return DecimalFormatUtil.formatW(views);
+                }catch (Exception e){
+
+                }
+
+                return view;
+            }
+
 
             public int getCategory_id() {
                 return category_id;
