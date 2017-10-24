@@ -5,10 +5,13 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+
+import com.example.chen.realtime.Constants;
 import com.example.chen.realtime.R;
 import com.example.chen.realtime.bean.LiveCategory;
 import com.example.chen.realtime.mvp.base.BaseFragment;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2017/10/23.
@@ -40,9 +44,8 @@ public class HomeFragment extends BaseFragment <ICategoryView,CategoryPresenter>
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-/*
     @BindView(R.id.fab)
-    FloatingActionButton fab;*/
+    FloatingActionButton fab;
 
     private ViewPagerFragmentAdapter viewPagerFragmentAdapter;
     private List<LiveCategory> listCategory;
@@ -81,9 +84,27 @@ public class HomeFragment extends BaseFragment <ICategoryView,CategoryPresenter>
 
             //----------------------------------------
             listTemp.add(getText(R.string.recommend));
-            listData.add(RecommendFragment.)
-        }
+            listData.add(RecommendFragment.newInstance());
+            listTemp.add(getText(R.string.tab_all));
+            listData.add(LiveListFragment.newInstance(null));
+            //----------------------------------------
 
+            for (int i=0;i<list.size();i++){
+                LiveCategory liveCategory = list.get(i);
+
+                listTemp.add(liveCategory.getName());
+                listData.add(LiveListFragment.newInstance(liveCategory.getSlug()));
+            }
+            toSetList(listTitle,listTemp,false);
+        }
+        if (viewPagerFragmentAdapter != null){
+            viewPagerFragmentAdapter.setListTitle(listTitle);
+            viewPagerFragmentAdapter.setListData(listData);
+            viewPagerFragmentAdapter.notifyDataSetChanged();
+        }
+    }
+
+    public void updateLiveCategory(List<LiveCategory> list,boolean isFirst){
 
     }
 
@@ -113,5 +134,23 @@ public class HomeFragment extends BaseFragment <ICategoryView,CategoryPresenter>
     @Override
     public CategoryPresenter createPresenter() {
         return new CategoryPresenter(getApp());
+    }
+
+    @OnClick({R.id.ivLeft,R.id.ivRight,R.id.btnMore,R.id.fab})
+
+    public void onClick(View view){
+        switch (view.getId()){
+            case R.id.ivLeft:
+                startActivity(getFragmentIntent(Constants.SEARCH_FRAGMENT));
+                break;
+            case R.id.ivRight:
+                startLogin();
+                break;
+            case R.id.btnMore:
+                break;
+            case R.id.fab:
+                startAbout();
+                break;
+        }
     }
 }

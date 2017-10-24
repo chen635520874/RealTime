@@ -32,7 +32,7 @@ public class ContentActivity extends AppCompatActivity{
         int fragmentKey = intent.getIntExtra(Constants.KEY_FRAGMENT,0);
         switch (fragmentKey){
             case  Constants.ROOM_FRAGMENT:
-                replaceFragment();
+                replaceFragment(RoomFragment);
         }
     }
 
