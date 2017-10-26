@@ -69,7 +69,7 @@
     <string name="recommend_more">更多</string>
 
     <!-- 搜索 -->
-    <string name="hint_search">请输入主播昵称或全民号</string>
+    <string name="hint_search">请输入主播昵称或房间号</string>
     <string name="tips_search_keywords_cannot_be_empty">搜索关键字不能为空</string>
     <string name="islive">正在直播</string>
 

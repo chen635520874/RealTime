@@ -81,7 +81,6 @@ public class ChatFragment  extends BaseFragment<IChatView,ChatPresenter>{
     public void onClick(View view){
         switch (view.getId()){
             case R.id.ivEmoji:
-                //startLogin();
                 break;
             case R.id.ivDanmu:
                // startLogin();
