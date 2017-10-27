@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends PureActivity {
 
@@ -87,23 +89,90 @@ public class MainActivity extends PureActivity {
         isExit=false;
     }
 
-    public void showHomeFragmnet(){
+    public void showHomeFragment(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         hideAllFragment(fragmentTransaction);
         if (homeFragment == null){
-            homeFragment = HomeFragment.
+            homeFragment = HomeFragment.newInstance();
+            fragmentTransaction.add(R.id.fragmentContent,homeFragment);
+        }
+        commitShowFragment(fragmentTransaction,homeFragment);
+
+    }
+
+    public void showLiveFragment(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        hideAllFragment(fragmentTransaction);
+        if (liveFragment == null){
+            liveFragment = liveFragment.newInstance(getString(R.string.tab_live),null,true);
+            fragmentTransaction.add(R.id.fragmentContent,liveFragment);
+        }
+        commitShowFragment(fragmentTransaction,liveFragment);
+    }
+
+    public void showFollowFragment(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        hideAllFragment(fragmentTransaction);
+        if(followFragment == null){
+            followFragment = FollowFragment.newInstance();
+            fragmentTransaction.add(R.id.fragmentContent,followFragment);
+        }
+
+        commitShowFragment(fragmentTransaction,followFragment);
+    }
+
+    public void showMineFragment(){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        hideAllFragment(fragmentTransaction);
+        if(mineFragment == null){
+            mineFragment = MineFragment.newInstance();
+            fragmentTransaction.add(R.id.fragmentContent,mineFragment);
+        }
+
+        commitShowFragment(fragmentTransaction,mineFragment);
+
+    }
+
+    public void commitShowFragment(FragmentTransaction fragmentTransaction,Fragment fragment){
+        fragmentTransaction.show(fragment);
+        fragmentTransaction.commit();
+    }
+
+
+    public void hideAllFragment(FragmentTransaction fragmentTransaction){
+        hideFragment(fragmentTransaction,homeFragment);
+        hideFragment(fragmentTransaction,liveFragment);
+        hideFragment(fragmentTransaction,followFragment);
+        hideFragment(fragmentTransaction,mineFragment);
+
+    }
+    public void hideFragment(FragmentTransaction fragmentTransaction,Fragment fragment){
+        if (fragment != null){
+            fragmentTransaction.hide(fragment);
         }
 
     }
 
-    public void hideAllFragment(FragmentTransaction fragmentTransaction){
-
-    }
-    public void hideAllFragment(FragmentTransaction fragmentTransaction,Fragment fragment){
-
-    }
-
     public void replaceFragment(@IdRes int id, Fragment fragment){
-
+        getSupportFragmentManager().beginTransaction().replace(id,fragment).commit();
+    }
+    @OnClick({R.id.rbHome, R.id.rbLive, R.id.rbFollw,R.id.rbMe})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rbHome:
+                showHomeFragment();
+                break;
+            case R.id.rbLive:
+                showLiveFragment();
+                break;
+            case R.id.rbFollw:
+                showFollowFragment();
+                break;
+            case R.id.rbMe:
+                showMineFragment();
+                break;
+        }
     }
 }

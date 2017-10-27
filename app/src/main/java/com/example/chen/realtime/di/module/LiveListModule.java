@@ -2,6 +2,7 @@ package com.example.chen.realtime.di.module;
 
 import com.example.chen.realtime.App;
 import com.example.chen.realtime.di.scope.FragmentScope;
+import com.example.chen.realtime.mvp.presenter.LiveListPresenter;
 
 import dagger.Module;
 import dagger.Provides;
@@ -19,5 +20,9 @@ public class LiveListModule {
     }
 
 
-
+    @FragmentScope
+    @Provides
+    public LiveListPresenter provideLiveListPresenter(){
+        return new LiveListPresenter(app);
+    }
 }
