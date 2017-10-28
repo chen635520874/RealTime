@@ -4,12 +4,13 @@ import com.example.chen.realtime.App;
 import com.example.chen.realtime.di.scope.FragmentScope;
 import com.example.chen.realtime.mvp.presenter.CategoryPresenter;
 
+import dagger.Module;
 import dagger.Provides;
 
 /**
  * Created by Administrator on 2017/10/20.
  */
-
+@Module
 public class CateroyModule {
 
     private App app;

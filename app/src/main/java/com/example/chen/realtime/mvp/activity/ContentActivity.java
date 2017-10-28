@@ -1,10 +1,8 @@
 package com.example.chen.realtime.mvp.activity;
 
 import android.content.Intent;
-import android.icu.text.Replaceable;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
@@ -19,13 +17,10 @@ import com.example.chen.realtime.mvp.fragment.SearchFragment;
 import com.example.chen.realtime.mvp.fragment.WebFragment;
 import com.king.base.util.LogUtils;
 
-import org.greenrobot.greendao.annotation.Id;
-
 /**
  * Created by Administrator on 2017/10/19.
  */
-
-public class ContentActivity extends AppCompatActivity{
+public class ContentActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

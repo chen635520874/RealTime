@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.chen.realtime.App;
@@ -31,73 +30,68 @@ public abstract class PureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
-        context  =this;
+        context = this;
         setContentView(getRootViewId());
 
         initUI();
+        setStatusViewColor(getResources().getColor(R.color.colorPrimaryDark));
     }
+
 
     public void replaceFragment(Fragment fragmnet){
         replaceFragment(R.id.fragmentContent,fragmnet);
     }
 
-    public void replaceFragment(@IdRes int id, Fragment fragmnet){
-        getSupportFragmentManager().beginTransaction().replace(id, fragmnet).commit();
+    public void replaceFragment(@IdRes int id, Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(id, fragment).commit();
     }
+
 
     public App getApp(){
-        return (App) getApplication();
+        return (App)getApplication();
     }
 
-
-    /**
-     * 状态栏颜色，高度
-     */
-
-    public void setStatusViewColorDefault(){
+    public  void setStatusViewColorDefault(){
         setStatusViewColor(COLOR_DEFAULT);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void setStatusViewColor(int statusColor){
-        if (Build.VERSION.SDK_INT >=Build.VERSION_CODES.LOLLIPOP){
-            if (statusColor != INVALID_VAL){
+    public  void setStatusViewColor(int statusColor){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (statusColor != INVALID_VAL) {
                 getWindow().setStatusBarColor(statusColor);
             }
             return;
         }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT <Build.VERSION_CODES.LOLLIPOP){
+//
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             int color = COLOR_DEFAULT;
             ViewGroup contentView = (ViewGroup) findViewById(android.R.id.content);
-            if (statusColor != INVALID_VAL){
-                color =statusColor;
+            if (statusColor != INVALID_VAL) {
+                color = statusColor;
             }
             View statusBarView = new View(this);
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     getStatusBarHeight(this));
             statusBarView.setBackgroundColor(color);
-            contentView.addView(statusBarView,lp);
+            contentView.addView(statusBarView, lp);
         }
     }
 
-    public int getStatusBarHeight(Context context){
+    public int getStatusBarHeight(Context context) {
         int result = 0;
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId>0){
+        if (resourceId > 0) {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
-        return  result;
+        return result;
     }
-
-
-
 
 
     public abstract int getRootViewId();
+
     public abstract void initUI();
 }

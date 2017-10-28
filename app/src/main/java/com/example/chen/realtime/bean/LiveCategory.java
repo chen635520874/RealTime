@@ -53,63 +53,84 @@ public class LiveCategory {
     public LiveCategory() {
     }
     public long getId() {
-        return this.id;
+        return id;
     }
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
     public String getName() {
-        return this.name;
+        return name;
     }
     public void setName(String name) {
         this.name = name;
     }
     public int getIs_default() {
-        return this.is_default;
+        return is_default;
     }
     public void setIs_default(int is_default) {
         this.is_default = is_default;
     }
     public int getSort() {
-        return this.sort;
+        return sort;
     }
     public void setSort(int sort) {
         this.sort = sort;
     }
     public String getIcon_gray() {
-        return this.icon_gray;
+        return icon_gray;
     }
     public void setIcon_gray(String icon_gray) {
         this.icon_gray = icon_gray;
     }
     public String getIcon_red() {
-        return this.icon_red;
+        return icon_red;
     }
     public void setIcon_red(String icon_red) {
         this.icon_red = icon_red;
     }
     public String getIcon_image() {
-        return this.icon_image;
+        return icon_image;
     }
     public void setIcon_image(String icon_image) {
         this.icon_image = icon_image;
     }
     public String getSlug() {
-        return this.slug;
+        return slug;
     }
     public void setSlug(String slug) {
         this.slug = slug;
     }
     public int getType() {
-        return this.type;
+        return type;
     }
     public void setType(int type) {
         this.type = type;
     }
     public int getScreen() {
-        return this.screen;
+        return screen;
     }
     public void setScreen(int screen) {
         this.screen = screen;
+    }
+
+
+    @Override
+    public String toString() {
+        return "LiveCategory{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", is_default=" + is_default +
+                ", sort=" + sort +
+                ", icon_gray='" + icon_gray + '\'' +
+                ", icon_red='" + icon_red + '\'' +
+                ", icon_image='" + icon_image + '\'' +
+                ", slug='" + slug + '\'' +
+                ", type=" + type +
+                ", screen=" + screen +
+                '}';
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

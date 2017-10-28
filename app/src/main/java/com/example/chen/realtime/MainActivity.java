@@ -1,14 +1,12 @@
 package com.example.chen.realtime;
 
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.chen.realtime.mvp.base.PureActivity;
 import com.example.chen.realtime.mvp.fragment.FollowFragment;
@@ -27,18 +25,21 @@ import butterknife.OnClick;
 
 public class MainActivity extends PureActivity {
 
-    @BindView(R.id.rbHome)
+    @BindView(com.example.chen.realtime.R.id.rbHome)
     RadioButton rbHome;
-    @BindView(R.id.rbLive)
+    @BindView(com.example.chen.realtime.R.id.rbLive)
     RadioButton rbLive;
-    @BindView(R.id.rbFollw)
+    @BindView(com.example.chen.realtime.R.id.rbFollw)
     RadioButton rbFollow;
-    @BindView(R.id.rbMe)
+    @BindView(com.example.chen.realtime.R.id.rbMe)
     RadioButton rbMe;
 
     private HomeFragment homeFragment;
+
     private LiveFragment liveFragment;
+
     private FollowFragment followFragment;
+
     private MineFragment mineFragment;
 
     private boolean isExit;
@@ -56,58 +57,67 @@ public class MainActivity extends PureActivity {
         EventBus.getDefault().unregister(this);
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        isExit =false;
+        isExit = false;
     }
 
     @Override
     public int getRootViewId() {
-        return R.layout.activity_main;
+        return com.example.chen.realtime.R.layout.activity_main;
     }
 
     @Override
     public void initUI() {
-
+        showHomeFragment();
     }
+
 
     @Override
     public void onBackPressed() {
-        if (!isExit){
+
+        if(!isExit){
             ToastUtils.showToast(context,R.string.press_again_to_exit);
-            isExit =true;
+            isExit = true;
             EventBus.getDefault().post(isExit);
         }else{
             super.onBackPressed();
         }
+
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onEventExit(Boolean isBool){
         SystemClock.sleep(1000);
-        isExit=false;
+        isExit = false;
     }
+
+
+
 
     public void showHomeFragment(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         hideAllFragment(fragmentTransaction);
-        if (homeFragment == null){
+        if(homeFragment == null){
             homeFragment = HomeFragment.newInstance();
-            fragmentTransaction.add(R.id.fragmentContent,homeFragment);
+            fragmentTransaction.add(com.example.chen.realtime.R.id.fragmentContent,homeFragment);
         }
         commitShowFragment(fragmentTransaction,homeFragment);
-
     }
 
     public void showLiveFragment(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         hideAllFragment(fragmentTransaction);
-        if (liveFragment == null){
-            liveFragment = liveFragment.newInstance(getString(R.string.tab_live),null,true);
-            fragmentTransaction.add(R.id.fragmentContent,liveFragment);
+        if(liveFragment == null){
+            liveFragment = LiveFragment.newInstance(getString(R.string.tab_live),null,true);
+            fragmentTransaction.add(com.example.chen.realtime.R.id.fragmentContent,liveFragment);
         }
+
         commitShowFragment(fragmentTransaction,liveFragment);
+
     }
 
     public void showFollowFragment(){
@@ -116,10 +126,11 @@ public class MainActivity extends PureActivity {
         hideAllFragment(fragmentTransaction);
         if(followFragment == null){
             followFragment = FollowFragment.newInstance();
-            fragmentTransaction.add(R.id.fragmentContent,followFragment);
+            fragmentTransaction.add(com.example.chen.realtime.R.id.fragmentContent,followFragment);
         }
 
         commitShowFragment(fragmentTransaction,followFragment);
+
     }
 
     public void showMineFragment(){
@@ -128,7 +139,7 @@ public class MainActivity extends PureActivity {
         hideAllFragment(fragmentTransaction);
         if(mineFragment == null){
             mineFragment = MineFragment.newInstance();
-            fragmentTransaction.add(R.id.fragmentContent,mineFragment);
+            fragmentTransaction.add(com.example.chen.realtime.R.id.fragmentContent,mineFragment);
         }
 
         commitShowFragment(fragmentTransaction,mineFragment);
@@ -140,37 +151,37 @@ public class MainActivity extends PureActivity {
         fragmentTransaction.commit();
     }
 
-
     public void hideAllFragment(FragmentTransaction fragmentTransaction){
         hideFragment(fragmentTransaction,homeFragment);
         hideFragment(fragmentTransaction,liveFragment);
         hideFragment(fragmentTransaction,followFragment);
         hideFragment(fragmentTransaction,mineFragment);
-
     }
-    public void hideFragment(FragmentTransaction fragmentTransaction,Fragment fragment){
-        if (fragment != null){
+
+    private void hideFragment(FragmentTransaction fragmentTransaction,Fragment fragment){
+        if(fragment!=null){
             fragmentTransaction.hide(fragment);
         }
-
     }
 
-    public void replaceFragment(@IdRes int id, Fragment fragment){
-        getSupportFragmentManager().beginTransaction().replace(id,fragment).commit();
+    public void replaceFragment(@IdRes int id, Fragment fragment) {
+
+        getSupportFragmentManager().beginTransaction().replace(id, fragment).commit();
     }
-    @OnClick({R.id.rbHome, R.id.rbLive, R.id.rbFollw,R.id.rbMe})
+
+    @OnClick({com.example.chen.realtime.R.id.rbHome, com.example.chen.realtime.R.id.rbLive,com.example.chen.realtime.R.id.rbFollw, R.id.rbMe})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rbHome:
+            case com.example.chen.realtime.R.id.rbHome:
                 showHomeFragment();
                 break;
-            case R.id.rbLive:
+            case com.example.chen.realtime.R.id.rbLive:
                 showLiveFragment();
                 break;
-            case R.id.rbFollw:
+            case com.example.chen.realtime.R.id.rbFollw:
                 showFollowFragment();
                 break;
-            case R.id.rbMe:
+            case com.example.chen.realtime.R.id.rbMe:
                 showMineFragment();
                 break;
         }

@@ -12,18 +12,22 @@ import javax.inject.Inject;
  * Created by Administrator on 2017/10/20.
  */
 
-public class BasePresenter <V extends BaseView> extends MvpBasePresenter<V> {
+public class BasePresenter<V extends BaseView> extends MvpBasePresenter<V> {
+
     private App app;
+
     private DaoSession mDaoSession;
+
     private AppComponent mAppComponent;
 
     @Inject
-    public BasePresenter(App app) {
+    public BasePresenter(App app){
         super();
         this.app = app;
         mDaoSession = app.getDaoSession();
-        mAppComponent = app.getAppComponent();
+        mAppComponent = app.getAppCommponent();
     }
+
 
     public AppComponent getAppComponent(){
         return mAppComponent;
@@ -34,12 +38,12 @@ public class BasePresenter <V extends BaseView> extends MvpBasePresenter<V> {
     }
 
     public App getApp(){
-        return app;
+        return getApp();
     }
 
     @Override
     public boolean isViewAttached() {
-        LogUtils.d("isViewAttached:"+super.isViewAttached());
+        LogUtils.d("isViewAttached:" + super.isViewAttached());
         return super.isViewAttached();
     }
 }
