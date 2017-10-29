@@ -41,10 +41,10 @@ public class AnchorInfoFragment extends SimpleFragment {
 
     private Room room;
 
-    public static AnchorInfoFragment newInstance(Room room){
-        Bundle args =new Bundle();
+    public static AnchorInfoFragment newInstance(Room room) {
+        Bundle args = new Bundle();
 
-        AnchorInfoFragment fragment =new AnchorInfoFragment();
+        AnchorInfoFragment fragment = new AnchorInfoFragment();
         fragment.room = room;
         fragment.setArguments(args);
         return fragment;
@@ -61,21 +61,23 @@ public class AnchorInfoFragment extends SimpleFragment {
     }
 
     public void onUpdateAnchor(Room room){
-        this.room =room;
+        this.room = room;
         initData();
     }
+
 
     @Override
     public void initData() {
 
-        if (room!=null&&getRootView()!=null){
-            Glide.with(this).load(room.getAvatar())
-                    .error(R.drawable.mine_default_avatar).placeholder(R.drawable.mine_default_avatar)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(civAvatar);
+        if (room != null && getRootView()!=null) {
+            Glide.with(this).load(room.getAvatar()).error(R.drawable.mine_default_avatar).placeholder(R.drawable.mine_default_avatar).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(civAvatar);
             tvAnchorName.setText(room.getNick());
             tvAccount.setText(String.valueOf(room.getNo()));
-            tvFans.setText(DecimalFormatUtil.formatW(room.getWeight()/100));
+            tvFans.setText(String.valueOf(room.getFollow()));
+            tvWeight.setText(DecimalFormatUtil.formatW(room.getWeight()/100));
             tvStartLiveTime.setText(room.getAnnouncement());
+
         }
     }
+
 }

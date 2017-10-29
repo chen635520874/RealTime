@@ -8,7 +8,7 @@ import com.example.chen.realtime.mvp.base.BaseView;
  * Created by Administrator on 2017/10/24.
  */
 
-public abstract class SimpleFragment extends BaseFragment <BaseView,BasePresenter<BaseView>> {
+public abstract class SimpleFragment extends BaseFragment<BaseView,BasePresenter<BaseView>> {
 
     @Override
     public BasePresenter<BaseView> createPresenter() {

@@ -10,5 +10,7 @@ import java.util.List;
  */
 
 public interface ICategoryView extends BaseView {
+
     void onGetLiveCategory(List<LiveCategory> list);
+
 }

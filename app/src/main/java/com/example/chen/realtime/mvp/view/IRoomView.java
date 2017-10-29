@@ -9,7 +9,10 @@ import com.example.chen.realtime.mvp.base.BaseView;
 
 public interface IRoomView extends BaseView {
 
+
+
     void enterRoom(Room room);
 
     void playUrl(String url);
+
 }

@@ -10,10 +10,11 @@ import com.example.chen.realtime.R;
 
 public class RankFragment extends SimpleFragment {
 
-    public static RankFragment newInstance(){
-        Bundle args =  new Bundle();
+    public static RankFragment newInstance() {
 
-        RankFragment fragment= new RankFragment();
+        Bundle args = new Bundle();
+
+        RankFragment fragment = new RankFragment();
         fragment.setArguments(args);
         return fragment;
     }

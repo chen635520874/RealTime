@@ -17,21 +17,22 @@ import com.example.chen.realtime.mvp.fragment.RoomFragment;
 
 public class RoomActivity extends PureActivity {
 
-
     private RoomFragment roomFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View decorView = getWindow().getDecorView();
             decorView.setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION//隐藏虚拟按键(导航栏)。有些手机会用虚拟按键来代替物理按键
-                    |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         super.onCreate(savedInstanceState);
     }
+
 
     @Override
     public int getRootViewId() {
@@ -43,4 +44,11 @@ public class RoomActivity extends PureActivity {
         roomFragment = RoomFragment.newInstance(getIntent().getStringExtra(Constants.KEY_UID));
         replaceFragment(roomFragment);
     }
+
+//
+//    @Override
+//    public void onConfigurationChanged(Configuration newConfig) {
+//        super.onConfigurationChanged(newConfig);
+//        roomFragment.onConfigurationChanged(newConfig);
+//    }
 }

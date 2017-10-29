@@ -10,6 +10,9 @@ import java.util.List;
  */
 
 public interface ILiveListView extends BaseView {
+
+
     void onGetLiveList(List<LiveInfo> list);
-    void onMoreLiveList(List<LiveInfo> list);
+    void onGetMoreLiveList(List<LiveInfo> list);
+
 }

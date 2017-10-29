@@ -31,7 +31,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation;
  * Created by Administrator on 2017/10/26.
  */
 
-public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> implements IRoomView {
+public class FullRoomFragment extends BaseFragment<IRoomView, RoomPresenter> implements IRoomView {
 
     @BindView(R.id.rlAnchorInfo)
     View rlAnchorInfo;
@@ -76,13 +76,13 @@ public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> impl
 
     private VideoFragment videoFragment;
 
+    public static FullRoomFragment newInstance(String uid,String coverUrl) {
 
-
-    public static FullRoomFragment newInstance(String uid,String coverUrl){
         Bundle args = new Bundle();
-        FullRoomFragment fragment =new FullRoomFragment();
-        fragment.uid =uid;
-        fragment.coverUrl =coverUrl;
+
+        FullRoomFragment fragment = new FullRoomFragment();
+        fragment.uid = uid;
+        fragment.coverUrl = coverUrl;
         fragment.setArguments(args);
         return fragment;
     }
@@ -93,6 +93,32 @@ public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> impl
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
+
+
+    @Override
+    public int getRootViewId() {
+        return R.layout.fragment_full_room;
+    }
+
+    @Override
+    public void initUI() {
+
+        tvAccount.setText(String.format(getString(R.string.qm_account),uid));
+
+        Glide.with(this).load(coverUrl).centerCrop().bitmapTransform(new BlurTransformation(context,18,3)).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(ivCover);
+    }
+
+    @Override
+    public void initData() {
+        getPresenter().enterRoom(uid,true);
+    }
+
+
+    @Override
+    public RoomPresenter createPresenter() {
+        return new RoomPresenter(getApp());
+    }
+
 
     @Override
     public void showProgress() {
@@ -111,74 +137,39 @@ public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> impl
 
     @Override
     public void enterRoom(Room room) {
+
         LogUtils.d("enterRoom:" + room.getUid());
         updateAnchorInfo(room);
-    }
-
-    /**
-     * 初始化房间主播头像
-     * @param room
-     */
-    public void updateAnchorInfo(Room room){
-        if (room!= null){
-            rlAnchorInfo.setVisibility(View.VISIBLE);
-            Glide.with(this).load(room.getAvatar())
-                    .centerCrop().crossFade()//淡入淡出默认时间300ms
-                    .placeholder(R.drawable.mine_default_avatar)
-                    .error(R.drawable.mine_default_avatar)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(civAvatar);
-            tvName.setText(room.getNick());
-            tvFans.setText(String.format(getString(R.string.fans_num),room.getFollow()));
-        }
-
     }
 
     @Override
     public void playUrl(String url) {
         LogUtils.d("playUrl:" + url);
-        if (videoFragment ==null){
+        if (videoFragment == null) {
             videoFragment = VideoFragment.newInstance(url,true);
         }
-        replaceChildFragment(R.id.frameVideo,videoFragment);
+        replaceChildFragment(R.id.frameVideo, videoFragment);
         clickHeart();
     }
 
-    @Override
-    public int getRootViewId() {
-        return R.layout.fragment_full_room;
+
+    private void updateAnchorInfo(Room room){
+        if(room!=null){
+            rlAnchorInfo.setVisibility(View.VISIBLE);
+            Glide.with(this).load(room.getAvatar()).placeholder(R.drawable.mine_default_avatar).error(R.drawable.mine_default_avatar).centerCrop().crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(civAvatar);
+            tvName.setText(room.getNick());
+            tvFans.setText(String.format(getString(R.string.fans_num),room.getFollow()));
+
+        }
     }
 
 
-    /**
-     * 初始化封面
-     */
-    @Override
-    public void initUI() {
-        tvAccount.setText(String.format(getString(R.string.qm_account),uid));
-        Glide.with(this).load(coverUrl).centerCrop()
-                .bitmapTransform(new BlurTransformation(context,18,3)) //“18”：设置模糊度(在0.0到25.0之间)，默认”25";"3":图片缩放比例,默认“1”。
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE).into(ivCover);
-    }
-
-    @Override
-    public void initData() {
-        getPresenter().enterRoom(uid,true);
-    }
-
-    @Override
-    public RoomPresenter createPresenter() {
-        return new RoomPresenter(getApp());
-    }
-
-    private void clickHeart(){
-        flutteringLayout.addHeart();
-    }
     private void clickInput(){
 
     }
 
     private void clickFollow(){
-        //startLogin();
+        startLogin();
     }
 
     private void clickGift(){
@@ -190,12 +181,17 @@ public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> impl
     }
 
     private void clickMessage(){
-        //startLogin();
+        startLogin();
     }
 
-    @OnClick({R.id.ivBack,R.id.ivInput,R.id.ivFollow,R.id.ivGif,R.id.ivShare,R.id.ivMessage,R.id.btnHeart})
-    public void OnViewClick(View view){
-        switch (view.getId()){
+    private void clickHeart(){
+        flutteringLayout.addHeart();
+    }
+
+
+    @OnClick({R.id.ivBack, R.id.ivInput, R.id.ivFollow, R.id.ivGift, R.id.ivShare, R.id.ivMessage,R.id.btnHeart})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
             case R.id.ivBack:
                 finish();
                 break;
@@ -205,7 +201,7 @@ public class FullRoomFragment extends BaseFragment<IRoomView,RoomPresenter> impl
             case R.id.ivFollow:
                 clickFollow();
                 break;
-            case R.id.ivGif:
+            case R.id.ivGift:
                 clickGift();
                 break;
             case R.id.ivShare:

@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.example.chen.realtime.App;
 import com.example.chen.realtime.Constants;
 import com.example.chen.realtime.bean.LiveInfo;
-import com.example.chen.realtime.bean.StreamSrc;
 import com.example.chen.realtime.mvp.activity.ContentActivity;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 import com.king.base.util.LogUtils;
@@ -31,7 +30,7 @@ import butterknife.Unbinder;
  * Created by Administrator on 2017/10/20.
  */
 
-public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<V>> extends MvpFragment<V,P> {
+public abstract class BaseFragment<V extends BaseView, P extends BasePresenter<V>>  extends MvpFragment<V,P>{
 
     protected Context context;
 
@@ -52,16 +51,15 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
         rootView = inflater.inflate(getRootViewId(),container,false);
         mUnbinder = ButterKnife.bind(this,rootView);
         LogUtils.d("onCreateView");
-
         initUI();
         return rootView;
     }
 
-    public void onDestroy(){
+    @Override
+    public void onDestroy() {
         super.onDestroy();
-        if (mUnbinder != null){
+        if(mUnbinder!=null)
             mUnbinder.unbind();
-        }
     }
 
     public View getRootView(){
@@ -74,21 +72,23 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
         initData();
     }
 
-    public void replaceFragment(@IdRes int id, Fragment fragment){
+    public void replaceFragment(@IdRes int id, Fragment fragment) {
         getFragmentManager().beginTransaction().replace(id, fragment).commit();
     }
 
-    public void replaceChildFragment(@IdRes int id,Fragment fragment){
+    public void replaceChildFragment(@IdRes int id, Fragment fragment) {
         getChildFragmentManager().beginTransaction().replace(id, fragment).commit();
     }
+
     public App getApp(){
-        return (App) getActivity().getApplication();
+        return (App)getActivity().getApplication();
     }
 
-    public <T> void toSetList(List<T> list,List<T> newList,boolean isMore){
-        if (list != null && newList != null){
+    public <T> void  toSetList(List<T> list, List<T> newList, boolean isMore){
+
+        if(list!=null && newList!=null){
             synchronized (BaseFragment.class){
-                if (!isMore){
+                if(!isMore){
                     list.clear();
                 }
                 list.addAll(newList);
@@ -114,11 +114,15 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
 
     }
 
+    //--------------------------------
+
     protected Intent getIntent(){
         return getActivity().getIntent();
     }
+
+
     protected Intent getFragmentIntent(int fragmentKey){
-        Intent intent= getContentActivityIntent();
+        Intent intent = getContentActivityIntent();
         intent.putExtra(Constants.KEY_FRAGMENT,fragmentKey);
         return intent;
     }
@@ -131,20 +135,23 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
         startActivity(new Intent(context,cls));
     }
 
+
     protected void finish(){
         getActivity().finish();
     }
 
-    protected void startWeb(String title, String url){
-        Intent intent =  getFragmentIntent(Constants.WEB_FRAGMENT);
+
+    protected void startWeb(String title,String url){
+        Intent intent = getFragmentIntent(Constants.WEB_FRAGMENT);
         intent.putExtra(Constants.KEY_TITLE,title);
         intent.putExtra(Constants.KEY_URL,url);
         startActivity(intent);
     }
 
     protected void startRoom(LiveInfo liveInfo){
+
         int fragmentKey = Constants.ROOM_FRAGMENT;
-        if (Constants.SHOWING.equalsIgnoreCase(liveInfo.getCategory_slug())){
+        if(Constants.SHOWING.equalsIgnoreCase(liveInfo.getCategory_slug())){
             fragmentKey = Constants.FULL_ROOM_FRAGMENT;
         }
         Intent intent = getFragmentIntent(fragmentKey);
@@ -158,12 +165,13 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
         startActivity(intent);
     }
 
+
     protected void startAbout(){
         Intent intent = getFragmentIntent(Constants.ABOUT_FRAGMENT);
         startActivity(intent);
     }
 
-
+    //--------------------------------
 
 
     public abstract int getRootViewId();
@@ -171,4 +179,6 @@ public abstract class  BaseFragment <V extends BaseView,P extends BasePresenter<
     public abstract void initUI();
 
     public abstract void initData();
+
+
 }

@@ -16,16 +16,18 @@ import rx.schedulers.Schedulers;
  */
 
 public class RoomPresenter extends BasePresenter<IRoomView> {
+
     public RoomPresenter(App app) {
         super(app);
     }
+
     public void enterRoom(String uid){
         enterRoom(uid,false);
     }
-    public void enterRoom(String uid,final boolean isShowing){
-        if (isViewAttached())
-            getView().showProgress();
 
+    public void enterRoom(String uid,final boolean isShowing){
+        if(isViewAttached())
+            getView().showProgress();
         getAppComponent().getAPIService()
                 .enterRoom(uid)
                 .subscribeOn(Schedulers.io())
@@ -33,38 +35,44 @@ public class RoomPresenter extends BasePresenter<IRoomView> {
                 .subscribe(new Observer<Room>() {
                     @Override
                     public void onCompleted() {
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onError(e);
-
                     }
 
                     @Override
                     public void onNext(Room room) {
-                        LogUtils.d("Response:"+room);
-                        if (isViewAttached())
+                        LogUtils.d("Response:" + room);
+                        if(isViewAttached())
                             getView().enterRoom(room);
-                        if (room !=null){
-                            String url = null;
+
+                        if(room!= null){
+                            String url =null;
+//                            RoomLine roomLine = room.getRoom_lines().get(0);
                             RoomLine roomLine = room.getLive().getWs();
 
                             RoomLine.FlvBean flv = roomLine.getFlv();
                             LogUtils.d("flv:" + flv);
-                            if (flv !=null){
+                            if(flv!=null){
                                 url = flv.getValue(isShowing).getSrc();
-                            }else {
+                            }else{
                                 url = roomLine.getHls().getValue(isShowing).getSrc();
                             }
-                            if (isViewAttached())
+                            if(isViewAttached())
                                 getView().playUrl(url);
                         }
 
                     }
                 });
+
+
     }
+
+
+
 }

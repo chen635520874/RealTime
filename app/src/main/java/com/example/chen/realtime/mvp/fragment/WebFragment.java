@@ -49,9 +49,11 @@ public class WebFragment extends SimpleFragment {
     private String title;
 
     protected boolean isError;
+
     private boolean isShowError;
 
-    public static WebFragment newInstance(String url,String title){
+    public static WebFragment newInstance(String url,String title) {
+
         Bundle args = new Bundle();
 
         WebFragment fragment = new WebFragment();
@@ -69,29 +71,37 @@ public class WebFragment extends SimpleFragment {
     @Override
     public void initUI() {
 
-        if (StringUtils.isBlank(title)){
+        if(!StringUtils.isBlank(title)){
             tvTitle.setText(title);
         }
         progressBar.setMax(100);
-        isShowError =addErrorView(vError);
+
+        isShowError = addErrorView(vError);
 
         WebSettings ws = webView.getSettings();
+        //是否允许脚本支持
         ws.setJavaScriptEnabled(true);
         ws.setDomStorageEnabled(true);
 
         ws.setJavaScriptCanOpenWindowsAutomatically(true);
 
+//        ws.setCacheMode(WebSettings.LOAD_NO_CACHE);
+
+//        webView.setHorizontalScrollBarEnabled(false);
+
+//        webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+
         String str = getIntent().getStringExtra(Constants.KEY_URL);
-        if (!TextUtils.isEmpty(str)){
+        if(!TextUtils.isEmpty(str)){
             this.url = str;
         }
+
 
         webView.setWebChromeClient(new WebChromeClient(){
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 updateProgressBar(newProgress);
-
             }
         });
         webView.setWebViewClient(getWebViewClient());
@@ -99,36 +109,31 @@ public class WebFragment extends SimpleFragment {
         load(webView,url);
     }
 
-    /**
-     *
-     * @param group
-     * @return  true表示已添加ErrorView并显示ErrorView/false表示不处理
-     */
-    public boolean addErrorView(ViewGroup group){
-        group.addView(LayoutInflater.from(context).inflate(R.layout.layout_error,null));
-        return true;
-    }
-
     @Override
     public void initData() {
 
     }
 
+
     public WebViewClient getWebViewClient(){
         return new WebViewClient(){
+
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 LogUtils.d("startUrl:" + url);
-                isError =false;
+                isError = false;
                 webView.setVisibility(View.VISIBLE);
             }
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 LogUtils.d("url:" + url);
-                return super.shouldOverrideUrlLoading(view, url);
+
+                return super.shouldOverrideUrlLoading(view,url);
+
             }
+
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
@@ -136,12 +141,14 @@ public class WebFragment extends SimpleFragment {
                 updateProgressBar(100);
             }
 
+
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 LogUtils.w("errorCode:" + errorCode + "|failingUrl:" + failingUrl);
                 showReceiveError();
             }
+
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -158,25 +165,41 @@ public class WebFragment extends SimpleFragment {
         };
     }
 
+    /**
+     *
+     * @param group
+     * @return  true表示已添加ErrorView并显示ErrorView/false表示不处理
+     */
+    public boolean addErrorView(ViewGroup group){
+        group.addView(LayoutInflater.from(context).inflate(R.layout.layout_error,null));
+        return true;
+    }
+
     private void showReceiveError(){
-        isError =true;
-        if (SystemUtils.isNetWorkActive(context)){
+        isError = true;
+        if(SystemUtils.isNetWorkActive(context)){
             LogUtils.w("Page loading failed.");
-        }else {
+        }else{
             LogUtils.w("Network unavailable.");
         }
-        if (isShowError){
+
+        if(isShowError){
             webView.setVisibility(View.GONE);
             vError.setVisibility(View.VISIBLE);
+
         }
+
+
     }
+
     private void hideReceiveError(){
-        if (isError){
+        if(isError){
             showReceiveError();
-        }else {
+        }else{
             webView.setVisibility(View.VISIBLE);
             vError.setVisibility(View.GONE);
         }
+
     }
 
     /**
@@ -185,31 +208,36 @@ public class WebFragment extends SimpleFragment {
      * @param url
      */
     private void load(WebView webView,String url){
-        if (TextUtils.isEmpty(url)){
+        LogUtils.d("url:" + url);
+        if(!TextUtils.isEmpty(url)){
             webView.loadUrl(url);
         }
+
     }
 
     private boolean isGoBack(){
-        return webView != null && webView.canGoBack();
+        return webView!=null && webView.canGoBack();
     }
+
 
     private void updateProgressBar(int progress){
         updateProgressBar(true,progress);
     }
 
+
     private void updateProgressBar(boolean isVisibility,int progress){
-        progressBar.setVisibility((isVisibility&& progress<100)?View.VISIBLE:View.GONE);
+
+        progressBar.setVisibility((isVisibility && progress<100) ? View.VISIBLE : View.GONE);
         progressBar.setProgress(progress);
     }
+
 
     @OnClick(R.id.ivLeft)
     public void onClick(View v){
         switch (v.getId()){
             case R.id.ivLeft:
-            finish();
-            break;
+                finish();
+                break;
         }
     }
-
 }

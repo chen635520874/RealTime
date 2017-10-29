@@ -9,7 +9,10 @@ import com.example.chen.realtime.mvp.view.IChatView;
  */
 
 public class ChatPresenter extends BasePresenter<IChatView> {
+
     public ChatPresenter(App app) {
         super(app);
     }
+
+
 }

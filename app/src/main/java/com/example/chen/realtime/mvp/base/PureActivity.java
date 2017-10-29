@@ -95,3 +95,5 @@ public abstract class PureActivity extends AppCompatActivity {
 
     public abstract void initUI();
 }
+
+

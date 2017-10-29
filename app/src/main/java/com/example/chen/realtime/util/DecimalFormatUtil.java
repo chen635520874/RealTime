@@ -10,19 +10,21 @@ import java.text.DecimalFormat;
 
 public class DecimalFormatUtil {
 
-    public static final DecimalFormat deciamalFormat = new DecimalFormat();
+    private static final DecimalFormat decimalFormat = new DecimalFormat();
 
-    public static String formatW(int value){
-        if (value >=10000){
-            float w = value/10000.0f;
-            return format(w,"#.#'w'");//w是value ,"#.#'w'"是形式（pattern）
+
+    public static String formatW(int vaule){
+        if(vaule>=10000){
+            float l = vaule/10000.0f;
+
+            return format(l,"#.#'W'");
         }
-        return String.valueOf(value);
+        return String.valueOf(vaule);
     }
 
-    public static String format(float value,String pattern){
-        LogUtils.d("value" + value);
-        deciamalFormat.applyPattern(pattern);
-        return deciamalFormat.format(value);
+    public static String format(float vaule,String pattern){
+        LogUtils.d("vaule:" + vaule);
+        decimalFormat.applyPattern(pattern);
+        return decimalFormat.format(vaule);
     }
 }

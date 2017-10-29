@@ -29,8 +29,6 @@ import com.jude.easyrecyclerview.decoration.SpaceDecoration;
 import com.king.base.util.LogUtils;
 import com.king.base.util.SystemUtils;
 
-import android.support.v4.app.Fragment;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,26 +38,30 @@ import butterknife.BindView;
  * Created by Administrator on 2017/10/23.
  */
 
-public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPresenter> implements IRecommendView {
+public class RecommendFragment extends BaseFragment<IRecommendView, RecommendPresenter> implements IRecommendView {
+
+
     private ConvenientBanner<Banner> convenientBanner;
 
     private TextView tvTips;
+
     @BindView(R.id.easyRecyclerView)
     EasyRecyclerView easyRecyclerView;
 
     RecommendAdapter recommendAdapter;
 
     private List<Recommend.RoomBean> listData;
+
     private List<Banner> listBanner;
 
-    public static RecommendFragment newInstance(){
+    public static RecommendFragment newInstance() {
+
         Bundle args = new Bundle();
+
         RecommendFragment fragment = new RecommendFragment();
         fragment.setArguments(args);
         return fragment;
     }
-
-
 
     @Override
     public int getRootViewId() {
@@ -68,6 +70,7 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
 
     @Override
     public void initUI() {
+
         tvTips = (TextView) easyRecyclerView.findViewById(R.id.tvTips);
 
         SpaceDecoration spaceDecoration = new SpaceDecoration(0);
@@ -76,6 +79,7 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
 
         listData = new ArrayList<>();
         recommendAdapter = new RecommendAdapter(context,listData);
+
 
         listBanner = new ArrayList<>();
         recommendAdapter.addHeader(new HeaderView(listBanner));
@@ -95,19 +99,20 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
     }
 
     private void clickBannerItem(Banner banner){
-        if (banner != null){
-            if (banner.isRoom()){//如果是房间就进入房间
+        if(banner!=null){
+            if(banner.isRoom()){//如果是房间类型就点击进入房间
                 startRoom(banner.getLink_object());
-            }else {//广告进入网页
+            }else{//广告类型
                 startWeb(banner.getTitle(),banner.getLink());
             }
         }
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        if (convenientBanner != null && !convenientBanner.isTurning()){
+        if(convenientBanner!=null && !convenientBanner.isTurning()) {
             convenientBanner.startTurning(4000);
         }
     }
@@ -115,15 +120,13 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
     @Override
     public void onPause() {
         super.onPause();
-        if (convenientBanner!=null){
+        if(convenientBanner!=null){
             convenientBanner.stopTurning();
         }
+
     }
 
-
     public class TestHeader implements RecyclerArrayAdapter.ItemView{
-
-
 
         @Override
         public View onCreateView(ViewGroup parent) {
@@ -137,18 +140,19 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
 
         }
     }
+
     public class HeaderView implements RecyclerArrayAdapter.ItemView{
 
         private List<Banner> listBanner;
 
         public HeaderView(List<Banner> listBanner){
-            this.listBanner =listBanner;
+            this.listBanner = listBanner;
         }
 
         @Override
         public View onCreateView(ViewGroup parent) {
             View v = LayoutInflater.from(context).inflate(R.layout.banner,null);
-            convenientBanner = (ConvenientBanner<Banner>) v.findViewById(R.id.convenientBanner);
+            convenientBanner = (ConvenientBanner)v.findViewById(R.id.convenientBanner);
             convenientBanner.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
@@ -168,7 +172,8 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
             },listBanner)
                     .setPageIndicator(new int[]{R.drawable.ic_dot_normal,R.drawable.ic_dot_pressed})
                     .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-            if (!convenientBanner.isTurning()){
+
+            if(!convenientBanner.isTurning()){
                 convenientBanner.startTurning(4000);
             }
         }
@@ -187,9 +192,7 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
 
         @Override
         public void UpdateUI(Context context, int position, Banner data) {
-            Glide.with(context).load(data.getThumb())
-                    .placeholder(R.mipmap.live_default).error(R.mipmap.live_default)
-                    .centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv);
+            Glide.with(context).load(data.getThumb()).placeholder(R.mipmap.live_default).error(R.mipmap.live_default).centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv);
         }
     }
 
@@ -198,12 +201,36 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
         easyRecyclerView.showProgress();
         getPresenter().getRecommend();
         getPresenter().getBanner();
-
     }
 
     @Override
     public RecommendPresenter createPresenter() {
         return new RecommendPresenter(getApp());
+    }
+
+    @Override
+    public void onGetRecommend(Recommend recommend) {
+
+    }
+
+    @Override
+    public void onGetRooms(List<Recommend.RoomBean> list) {
+//        toSetList(listData,list,false);
+        recommendAdapter.clear();
+        recommendAdapter.addAll(list);
+        recommendAdapter.notifyDataSetChanged();
+        if(recommendAdapter.getCount()==0){
+            easyRecyclerView.showEmpty();
+        }
+    }
+
+    @Override
+    public void onGetBanner(List<Banner> list) {
+
+        if(convenientBanner!=null){
+            toSetList(listBanner,list,false);
+            convenientBanner.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -214,57 +241,17 @@ public class RecommendFragment extends BaseFragment<IRecommendView,RecommendPres
     @Override
     public void onCompleted() {
         easyRecyclerView.setRefreshing(false);
-
     }
 
     @Override
     public void onError(Throwable e) {
         LogUtils.w(e);
-        if (SystemUtils.isNetWorkActive(context)){
+        if(SystemUtils.isNetWorkActive(context)){
             tvTips.setText(R.string.page_load_failed);
-        }else {
+        }else{
             tvTips.setText(R.string.network_unavailable);
         }
         easyRecyclerView.showError();
-
     }
 
-    @Override
-    public void onGetRecommend(Recommend recommend) {
-
-    }
-
-    @Override
-    public void onGetRooms(List<Recommend.RoomBean> list) {
-
-        recommendAdapter.clear();
-        recommendAdapter.addAll(list);
-        recommendAdapter.notifyDataSetChanged();
-        if (recommendAdapter.getCount()==0){
-            easyRecyclerView.showEmpty();
-        }
-    }
-
-    @Override
-    public void onGetBanner(List<Banner> list) {
-        if (convenientBanner != null){
-            toSetList(listBanner,list,false);
-            convenientBanner.notifyDataSetChanged();
-        }
-
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

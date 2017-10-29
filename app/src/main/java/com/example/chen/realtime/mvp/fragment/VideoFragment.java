@@ -10,32 +10,35 @@ import com.example.chen.realtime.mvp.base.BaseView;
 import com.king.base.util.LogUtils;
 import com.pili.pldroid.player.PLMediaPlayer;
 import com.pili.pldroid.player.widget.PLVideoTextureView;
+import com.pili.pldroid.player.widget.PLVideoView;
 
 import butterknife.BindView;
 
 /**
  * Created by Administrator on 2017/10/24.
  */
+public class VideoFragment extends BaseFragment<BaseView, BasePresenter<BaseView>> {
 
-public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView>>{
 
     @BindView(R.id.vtv)
     PLVideoTextureView vtv;
 
     private int mRotation;
+
     private String url;
+
     private boolean isFull;
 
-    public static VideoFragment newInstance(String url,boolean isFull){
-        Bundle args =new Bundle();
+    public static VideoFragment newInstance(String url,boolean isFull) {
 
-        VideoFragment fragment =new VideoFragment();
-        fragment.url =url;
+        Bundle args = new Bundle();
+
+        VideoFragment fragment = new VideoFragment();
+        fragment.url = url;
         fragment.isFull = isFull;
         fragment.setArguments(args);
         return fragment;
     }
-
 
     @Override
     public int getRootViewId() {
@@ -44,26 +47,25 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
 
     @Override
     public void initUI() {
-        LogUtils.d("url:"+url);
+        LogUtils.d("url:" + url);
         vtv.setVideoPath(url);
-        if (isFull){
-            vtv.setDisplayOrientation(PLVideoTextureView.ASPECT_RATIO_PAVED_PARENT);
-        }else {
-            vtv.setDisplayOrientation(PLVideoTextureView.ASPECT_RATIO_16_9);
+        if(isFull){
+            vtv.setDisplayOrientation(PLVideoView.ASPECT_RATIO_PAVED_PARENT);
+        }else{
+            vtv.setDisplayOrientation(PLVideoView.ASPECT_RATIO_16_9);
         }
         vtv.setOnPreparedListener(new PLMediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(PLMediaPlayer plMediaPlayer) {
-                LogUtils.d("onPrepared:"+url);
+                LogUtils.d("onPrepared:" + url);
                 start();
             }
         });
         vtv.setOnBufferingUpdateListener(new PLMediaPlayer.OnBufferingUpdateListener() {
             @Override
             public void onBufferingUpdate(PLMediaPlayer plMediaPlayer, int i) {
-                if (i>0){
+                if(i>0)
                     LogUtils.d("onBufferingUpdate|" + i);
-                }
             }
         });
         vtv.setOnCompletionListener(new PLMediaPlayer.OnCompletionListener() {
@@ -75,14 +77,16 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
         vtv.setOnInfoListener(new PLMediaPlayer.OnInfoListener() {
             @Override
             public boolean onInfo(PLMediaPlayer plMediaPlayer, int i, int i1) {
-                LogUtils.d("onInfo|i:"+i+"--i1:"+i1);
+                LogUtils.d("onInfo|i:" + i + "--i1:" + i1);
                 return false;
             }
         });
+
         vtv.setOnErrorListener(new PLMediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(PLMediaPlayer plMediaPlayer, int i) {
                 LogUtils.w("onError:i:" + i);
+
                 return false;
             }
         });
@@ -92,25 +96,26 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
     public PLVideoTextureView getVideoView(){
         return vtv;
     }
+
     public boolean isPlaying(){
-        return isPlaying();
+        return vtv.isPlaying();
     }
 
     private void start(){
-        if (vtv!=null){
+        if(vtv!=null)
             vtv.start();
-        }
     }
     public void pause(){
-        if (vtv!=null){
+        if(vtv!=null)
             vtv.pause();
-        }
     }
+
     public void stopPlayback(){
-        if (vtv!=null){
+        if(vtv!=null)
             vtv.stopPlayback();
-        }
+
     }
+
     public void seekTo(long i){
         vtv.seekTo(i);
     }
@@ -126,6 +131,7 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
         super.onPause();
         pause();
     }
+
     public int getDisplayAspectRatio(){
         return vtv.getDisplayAspectRatio();
     }
@@ -136,8 +142,9 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
         stopPlayback();
     }
 
-    public void onClickRotate(View view){
-        mRotation = (vtv.getDisplayAspectRatio()+90) % 360;
+
+    public void onClickRotate(View v) {
+        mRotation = (vtv.getDisplayAspectRatio() + 90) % 360;
         setDisplayAspectRatio(mRotation);
     }
 
@@ -155,15 +162,23 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
         vtv.setDisplayAspectRatio(ratio);
     }
 
+    /**
+     *
+     * @param orientation
+     *      0/90/180/270
+     */
     public void setDisplayOrientation(int orientation){
         vtv.setDisplayOrientation(orientation);
     }
+
     public void play(String url){
         this.url = url;
-        LogUtils.d("url:"+url);
+        LogUtils.d("url:" + url);
         vtv.setVideoPath(url);
         vtv.start();
     }
+
+
 
     @Override
     public void initData() {
@@ -171,7 +186,9 @@ public class VideoFragment extends BaseFragment <BaseView,BasePresenter<BaseView
     }
 
     @Override
-    public BasePresenter<BaseView> createPresenter() {
+    public BasePresenter createPresenter() {
         return new BasePresenter(getApp());
     }
+
+
 }

@@ -11,7 +11,7 @@
 
     <string name="search">搜索</string>
 
-    <string name="press_again_to_exit">再按一次退出KingTV</string>
+    <string name="press_again_to_exit">再按一次退出</string>
 
     <string name="scoll_aware_fab_behavior">.view.ScollAwareFABBehavior</string>
 
@@ -79,16 +79,15 @@
     <string name="page_load_failed">加载失败…</string>
     <string name="swipe_down_to_refresh">下拉刷新数据</string>
 
-    <string name="current_version_">KingTV %1$s</string>
+    <string name="current_version_">直播App %1$s</string>
     <string name="about">关于</string>
     <string name="author_">Author:</string>
-    <string name="email_">Email:</string>
     <string name="csdn_">CSDN:</string>
-    <string name="github_">Github:</string>
+    <string name="GitHub_">GitHub</string>
 
-    <string name="author_jenly">Jenly</string>
-    <string name="email_jenly"><u>jenly1314@gmail.com</u></string>
-    <string name="csdn_jenly"><u>http://blog.csdn.net/jenly121</u></string>
-    <string name="github_jenly"><u>https://github.com/jenly1314</u></string>
+    <string name="author">CodeChenL</string>
+    <string name="csdn">http://blog.csdn.net/qq_24058693</string>
+    <string name="GitHub">https://github.com/chen635520874</string>
+
 
 </resources>

@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.chen.realtime.R;
-import com.example.chen.realtime.bean.Recommend;
 import com.example.chen.realtime.bean.Room;
 import com.example.chen.realtime.mvp.base.BaseFragment;
 import com.example.chen.realtime.mvp.presenter.RoomPresenter;
@@ -37,7 +36,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/10/24.
  */
 
-public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> implements IRoomView{
+public class RoomFragment extends BaseFragment<IRoomView, RoomPresenter> implements IRoomView {
 
     private VideoFragment videoFragment;
 
@@ -65,16 +64,22 @@ public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> impleme
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
+
     private ViewPagerFragmentAdapter viewPagerFragmentAdapter;
 
     private List<CharSequence> listTitle;
+
     private List<Fragment> listData;
+
     private Room room;
+
     private String uid;
+
     private AnchorInfoFragment anchorInfoFragment;
 
-    public static RoomFragment newInstance(String uid){
-        Bundle  args =new Bundle();
+    public static RoomFragment newInstance(String uid) {
+
+        Bundle args = new Bundle();
 
         RoomFragment fragment = new RoomFragment();
         fragment.uid = uid;
@@ -87,6 +92,90 @@ public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> impleme
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+
+    @Override
+    public int getRootViewId() {
+        return R.layout.fragment_room;
+    }
+
+    @Override
+    public void initUI() {
+
+        updateVideoLayoutParams();
+
+        listTitle = new ArrayList<>();
+
+        listTitle.add(getText(R.string.room_chat));
+        listTitle.add(getText(R.string.room_ranking));
+        listTitle.add(getText(R.string.room_anchor));
+        listData = new ArrayList<>();
+        listData.add(ChatFragment.newInstance());
+        listData.add(RankFragment.newInstance());
+        anchorInfoFragment = AnchorInfoFragment.newInstance(room);
+        listData.add(anchorInfoFragment);
+        viewPagerFragmentAdapter = new ViewPagerFragmentAdapter(getFragmentManager(), listData, listTitle);
+
+        viewPager.setAdapter(viewPagerFragmentAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                if(tab.getText().equals(getText(R.string.room_anchor))){
+//                    anchorInfoFragment.onUpdateAnchor(room);
+//                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+    }
+
+    public void updateVideoLayoutParams(){
+        ViewGroup.LayoutParams lp = videoContent.getLayoutParams();
+        if(isLandscape()){
+            lp.height = DensityUtil.getDisplayMetrics(context).heightPixels;
+        }else{
+            lp.height = (int)(DensityUtil.getDisplayMetrics(context).widthPixels / 16.0f * 9.0f);
+        }
+
+        videoContent.setLayoutParams(lp);
+    }
+
+    @Override
+    public void initData() {
+        getPresenter().enterRoom(uid);
+    }
+
+    @Override
+    public RoomPresenter createPresenter() {
+        return new RoomPresenter(getApp());
+    }
+
+    @Override
+    public void enterRoom(Room room) {
+        this.room = room;
+        LogUtils.d("room");
+        anchorInfoFragment.onUpdateAnchor(room);
+        viewPagerFragmentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void playUrl(String url) {
+        LogUtils.d("playUrl:" + url);
+        if (videoFragment == null) {
+            videoFragment = VideoFragment.newInstance(url,false);
+        }
+        replaceChildFragment(R.id.frameVideo, videoFragment);
     }
 
     @Override
@@ -104,97 +193,34 @@ public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> impleme
 
     }
 
-    @Override
-    public void enterRoom(Room room) {
-        LogUtils.d("room");
-        this.room = room;
-        anchorInfoFragment.onUpdateAnchor(room);
-        viewPagerFragmentAdapter.notifyDataSetChanged();
-    }
+    //-------------------------------
 
     @Override
-    public void playUrl(String url) {
-        LogUtils.d("playUrl:" + url);
-        if (videoFragment == null){
-            videoFragment =VideoFragment.newInstance(url,false);
-        }
-        replaceChildFragment(R.id.frameVideo,videoFragment);
-    }
-
-    @Override
-    public int getRootViewId() {
-        return R.layout.fragment_room;
-    }
-
-    @Override
-    public void initUI() {
-        updateVideoLayoutParams();
-
-        listTitle =new ArrayList<>();
-        listTitle.add(getText(R.string.room_chat));
-        listTitle.add(getText(R.string.room_ranking));
-        listTitle.add(getText(R.string.room_anchor));
-
-        listData =new ArrayList<>();
-        listData.add(ChatFragment.newInstance());
-        listData.add(RankFragment.newInstance());
-        anchorInfoFragment  = new AnchorInfoFragment().newInstance(room);
-        listData.add(anchorInfoFragment);
-
-        viewPagerFragmentAdapter =  new ViewPagerFragmentAdapter(getFragmentManager(),listData,listTitle);
-
-        viewPager.setAdapter(viewPagerFragmentAdapter);
-        tabLayout.setupWithViewPager(viewPager);
-    }
-
-
-    public void updateVideoLayoutParams(){
-        ViewGroup.LayoutParams lp = videoContent.getLayoutParams();
-
-            if (isLandscape()){
-                lp.height = DensityUtil.getDisplayMetrics(context).heightPixels;
-            }else {
-                lp.height = (int) (DensityUtil.getDisplayMetrics(context).widthPixels/16.0f*9.0f);
-            }
-            videoContent.setLayoutParams(lp);
-    }
-
-    @Override
-    public void initData() {
-        getPresenter().enterRoom(uid);
-    }
-
-    @Override
-    public RoomPresenter createPresenter() {
-        return new RoomPresenter(getApp());
-    }
-
-
-    public boolean isLandscape(){
-        return getActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;//重力感应
-    }
-
-    public void onConfigurationChanged(Configuration newConfig){
+    public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        if (isLandscape()){
+        if(isLandscape()){
             llRoomChat.setVisibility(View.GONE);
             ivFullScreen.setVisibility(View.GONE);
-        }else {
+        }else{
             llRoomChat.setVisibility(View.VISIBLE);
             ivFullScreen.setVisibility(View.VISIBLE);
         }
         updateVideoLayoutParams();
+
     }
+
+
+    //-------------------------------
 
     public void clickFrameVideo(){
 
     }
 
     public void clickBack(){
-        if (isLandscape()){
+        if(isLandscape()){
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else {
+        }else{
             finish();
         }
     }
@@ -203,21 +229,25 @@ public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> impleme
 
     }
 
+    public boolean isLandscape(){
+        return getActivity().getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    }
+
     public void clickFullScreen(){
-        if (isLandscape()){
+        if(isLandscape()){
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else {
+        }else{
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
     }
 
     public void clickFollow(){
-
+        startLogin();
     }
 
-    @OnClick({R.id.frameVideo,R.id.ivBack,R.id.ivShare,R.id.ivFullScreen,R.id.videoContent,R.id.ivFollow})
-    public void onClick(View view){
-        switch (view.getId()){
+    @OnClick({R.id.frameVideo, R.id.ivBack, R.id.ivShare, R.id.ivFullScreen, R.id.videoContent, R.id.tvFollow})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.videoContent:
             case R.id.frameVideo:
                 clickFrameVideo();
@@ -231,31 +261,9 @@ public class RoomFragment extends BaseFragment <IRoomView,RoomPresenter> impleme
             case R.id.ivFullScreen:
                 clickFullScreen();
                 break;
-            case R.id.ivFollow:
+            case R.id.tvFollow:
                 clickFollow();
                 break;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

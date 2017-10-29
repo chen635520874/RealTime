@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chen.realtime.R;
 import com.king.base.util.ToastUtils;
@@ -82,10 +83,13 @@ public class LoginFragment extends SimpleFragment {
                 ToastUtils.showToast(context,R.string.forget_password);
                 break;
             case R.id.ivQQ:
+                Toast.makeText(context,"该功能暂未开放哟！",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ivSina:
+                Toast.makeText(context,"该功能暂未开放哟！",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ivWeixin:
+                Toast.makeText(context,"该功能暂未开放哟！",Toast.LENGTH_SHORT).show();
                 break;
         }
     }

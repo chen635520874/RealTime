@@ -12,7 +12,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observer;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -36,16 +35,15 @@ public class CategoryPresenter extends BasePresenter<ICategoryView> {
                 .subscribe(new Observer<List<LiveCategory>>() {
                     @Override
                     public void onCompleted() {
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onCompleted();
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (isViewAttached()){
+                        if(isViewAttached())
                             getView().onError(e);
-                        }
-
                     }
 
                     @Override
@@ -58,22 +56,26 @@ public class CategoryPresenter extends BasePresenter<ICategoryView> {
                                 getDaoSession().getLiveCategoryDao().insertOrReplaceInTx(list);
                             }
                         });
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onGetLiveCategory(list);
 
                     }
                 });
-    }
 
+
+
+
+    }
 
     public void getAllCategoriesByDB(){
-        List<LiveCategory> list = getDaoSession().getLiveCategoryDao().loadAll();
-        LogUtils.d("list:"+list);
-        if (list!=null&&list.size()>0){
-            if (isViewAttached()){
+        List<LiveCategory> list =  getDaoSession().getLiveCategoryDao().loadAll();
+        LogUtils.d("list:" + list);
+        if(list!=null && list.size()>0){
+            if(isViewAttached())
                 getView().onGetLiveCategory(list);
-            }
         }
+
     }
+
 
 }

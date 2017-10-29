@@ -11,7 +11,10 @@ import java.util.List;
  */
 
 public interface IRecommendView extends BaseView {
+
     void onGetRecommend(Recommend recommend);
+
     void onGetRooms(List<Recommend.RoomBean> list);
+
     void onGetBanner(List<Banner> list);
 }

@@ -16,14 +16,17 @@ import rx.schedulers.Schedulers;
  */
 
 public class RecommendPresenter extends BasePresenter<IRecommendView> {
+
     public RecommendPresenter(App app) {
         super(app);
     }
 
-    public void getRecommend(){
-        if (isViewAttached())
-            getView().showProgress();
 
+
+    public void getRecommend(){
+        if(isViewAttached()){
+            getView().showProgress();
+        }
         getAppComponent().getAPIService()
                 .getRecommend()
                 .subscribeOn(Schedulers.io())
@@ -31,24 +34,24 @@ public class RecommendPresenter extends BasePresenter<IRecommendView> {
                 .subscribe(new Subscriber<Recommend>() {
                     @Override
                     public void onCompleted() {
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onCompleted();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onError(e);
                     }
 
                     @Override
                     public void onNext(Recommend recommend) {
                         LogUtils.d("Response:"+ recommend);
-                        if (isViewAttached())
+                        if(isViewAttached())
                             getView().onGetRecommend(recommend);
 
-                        if (recommend !=null){
-                            if (isViewAttached())
+                        if(recommend!=null){
+                            if(isViewAttached())
                                 getView().onGetRooms(recommend.getRoom());
                         }
                     }
@@ -73,14 +76,13 @@ public class RecommendPresenter extends BasePresenter<IRecommendView> {
 
                     @Override
                     public void onNext(AppStart appStart) {
-                        if (appStart != null){
-                            if (isViewAttached())
+                        if(appStart!=null){
+                            if(isViewAttached())
                                 getView().onGetBanner(appStart.getBanners());
                         }
-
                     }
-                });
 
+                });
     }
 
 }

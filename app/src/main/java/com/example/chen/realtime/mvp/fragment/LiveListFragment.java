@@ -31,7 +31,8 @@ import butterknife.BindView;
  * Created by Administrator on 2017/10/24.
  */
 
-public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresenter> implements ILiveListView {
+public class LiveListFragment extends BaseFragment<ILiveListView, LiveListPresenter> implements ILiveListView {
+
 
     View loadMore;
     TextView tvEmpty;
@@ -39,20 +40,26 @@ public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresent
 
     @BindView(R.id.easyRecyclerView)
     EasyRecyclerView easyRecyclerView;
+
     EasyLiveAdapter easyLiveAdapter;
 
     List<LiveInfo> listData;
 
     private String slug;
+
     private boolean isSearch;
+
     private int page;
+
     private String key;
+
     private boolean isMore;
 
-    public static LiveListFragment newInstance(String slug){
+    public static LiveListFragment newInstance(String slug) {
         return newInstance(slug,false);
     }
-    public static LiveListFragment newInstance(String slug,boolean isSearch){
+
+    public static LiveListFragment newInstance(String slug,boolean isSearch) {
         Bundle args = new Bundle();
 
         LiveListFragment fragment = new LiveListFragment();
@@ -63,51 +70,6 @@ public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresent
         return fragment;
     }
 
-
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void onCompleted() {
-
-    }
-
-    @Override
-    public void onError(Throwable e) {
-
-        LogUtils.w(e);
-        if (SystemUtils.isNetWorkActive(context)){
-            tvTips.setText(R.string.page_load_failed);
-        }else {
-            tvTips.setText(R.string.network_unavailable);
-        }
-        easyRecyclerView.showError();
-
-    }
-
-    @Override
-    public LiveListPresenter createPresenter() {
-        return null;
-    }
-
-    @Override
-    public void onGetLiveList(List<LiveInfo> list) {
-        easyLiveAdapter.clear();
-        easyLiveAdapter.addAll(list);
-        refreshView();
-    }
-    public void onGetMoreLiveList(List<LiveInfo> list){
-        easyLiveAdapter.addAll(list);
-        refreshView();
-    }
-
-    @Override
-    public void onMoreLiveList(List<LiveInfo> list) {
-
-    }
 
     @Override
     public int getRootViewId() {
@@ -121,40 +83,42 @@ public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresent
 
         SpaceDecoration spaceDecoration = new SpaceDecoration(DensityUtil.dp2px(context,6));
         easyRecyclerView.addItemDecoration(spaceDecoration);
-
+//        recyclerView.setRefreshingColor(R.color.colorPrimary);
         easyRecyclerView.setRefreshingColorResources(R.color.progress_color);
         listData = new ArrayList<>();
         easyLiveAdapter = new EasyLiveAdapter(context,listData,isSearch);
         easyLiveAdapter.setNotifyOnChange(false);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2);
+        gridLayoutManager.setSpanSizeLookup(easyLiveAdapter.obtainGridSpanSizeLookUp(2));
         easyRecyclerView.setLayoutManager(gridLayoutManager);
 
         easyRecyclerView.setAdapter(easyLiveAdapter);
         easyRecyclerView.setRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (isSearch){
-                    if (!StringUtils.isBlank(key)){
-                        page =0;
+                if(isSearch){
+                    if(!StringUtils.isBlank(key)){
+                        page = 0;
                         getPresenter().getLiveListByKey(key,page);
                     }
-                }else {
+                }else{
                     getPresenter().getLiveList(slug);
                 }
+
             }
         });
-        if (isSearch){
+        if(isSearch){
             loadMore = LayoutInflater.from(context).inflate(R.layout.load_more,null);
             easyLiveAdapter.setMore(loadMore, new RecyclerArrayAdapter.OnMoreListener() {
                 @Override
                 public void onMoreShow() {
-                    if (isMore){
-                        if (loadMore != null){
+                    if(isMore){
+                        if(loadMore!=null){
                             loadMore.setVisibility(View.VISIBLE);
                         }
                         getPresenter().getLiveListByKey(key,page);
                     }
+
                 }
 
                 @Override
@@ -163,59 +127,58 @@ public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresent
                 }
             });
         }
+
         easyLiveAdapter.setOnItemClickListener(new RecyclerArrayAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+
                 startRoom(easyLiveAdapter.getItem(position));
             }
         });
     }
 
-
-    /**
-     * 搜索
-     * @param key
-     * @param page
-     */
     public void search(String key,int page){
         this.key = key;
         this.page = page;
-        getPresenter().getLiveListByKey(key, page);
+        getPresenter().getLiveListByKey(key,page);
     }
 
     @Override
     public void initData() {
-        if (!isSearch){
+        if(!isSearch){
             easyRecyclerView.showProgress();
             getPresenter().getLiveList(slug);
         }
     }
 
-    public LiveListPresenter creatPresenter(){
+
+    @Override
+    public LiveListPresenter createPresenter() {
         return new LiveListPresenter(getApp());
     }
 
     public void refreshView(){
         easyLiveAdapter.notifyDataSetChanged();
         easyRecyclerView.setRefreshing(false);
-        if (easyLiveAdapter.getCount() == 0){
-            if (isSearch){
-                if (SystemUtils.isNetWorkActive(context)){
+        if(easyLiveAdapter.getCount()==0){
+            if(isSearch){
+                if(SystemUtils.isNetWorkActive(context)){
                     tvEmpty.setText(R.string.can_not_find_relevant_content);
-                }else {
+                }else{
                     tvTips.setText(R.string.network_unavailable);
                 }
-            }else {
+            }else{
                 tvEmpty.setText(R.string.swipe_down_to_refresh);
             }
             easyRecyclerView.showEmpty();
         }
-        if (isSearch){
-            if (easyLiveAdapter.getCount()>=(page+1)* P.DEFAULT_SIZE){
+
+        if(isSearch){
+            if(easyLiveAdapter.getCount()>= (page+1) * P.DEFAULT_SIZE){
                 page++;
                 isMore = true;
-            }else{
-                if (loadMore !=null){
+            }else {
+                if(loadMore!=null){
                     loadMore.setVisibility(View.GONE);
                 }
                 isMore = false;
@@ -223,21 +186,40 @@ public class LiveListFragment extends BaseFragment<ILiveListView,LiveListPresent
         }
     }
 
+    @Override
+    public void onGetLiveList(List<LiveInfo> list) {
+//        toSetList(listData,list,false);
+        easyLiveAdapter.clear();
+        easyLiveAdapter.addAll(list);
+        refreshView();
+    }
+
+    @Override
+    public void onGetMoreLiveList(List<LiveInfo> list) {
+        easyLiveAdapter.addAll(list);
+        refreshView();
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void onCompleted() {
+        easyRecyclerView.setRefreshing(false);
+    }
+
+    @Override
+    public void onError(Throwable e) {
+        LogUtils.w(e);
+        if(SystemUtils.isNetWorkActive(context)){
+            tvTips.setText(R.string.page_load_failed);
+        }else{
+            tvTips.setText(R.string.network_unavailable);
+        }
+        easyRecyclerView.showError();
+    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

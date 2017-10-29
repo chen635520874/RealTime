@@ -27,11 +27,13 @@ public class LiveFragment extends BaseFragment<BaseView,BasePresenter<BaseView>>
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
+
     private String title;
     private String slug;
     private boolean isTabLive;
 
-    public static LiveFragment newInstance(String title,String slug,boolean isTabLive){
+    public static LiveFragment newInstance(String title,String slug, boolean isTabLive) {
+
         Bundle args = new Bundle();
 
         LiveFragment fragment = new LiveFragment();
@@ -50,10 +52,10 @@ public class LiveFragment extends BaseFragment<BaseView,BasePresenter<BaseView>>
     @Override
     public void initUI() {
         tvTitle.setText(title);
-        if (isTabLive){
+        if(isTabLive){
             ivLeft.setImageResource(R.drawable.ic_top_search);
             ivRight.setVisibility(View.VISIBLE);
-        }else {
+        }else{
             ivLeft.setImageResource(R.drawable.btn_back_selector);
             ivRight.setVisibility(View.INVISIBLE);
         }
@@ -66,9 +68,9 @@ public class LiveFragment extends BaseFragment<BaseView,BasePresenter<BaseView>>
     }
 
     private void clickLeft(){
-        if (isTabLive){
+        if(isTabLive){
             startActivity(getFragmentIntent(Constants.SEARCH_FRAGMENT));
-        }else {
+        }else{
             finish();
         }
     }
@@ -80,10 +82,11 @@ public class LiveFragment extends BaseFragment<BaseView,BasePresenter<BaseView>>
                 clickLeft();
                 break;
             case R.id.ivRight:
-                //startLogin();
+                startLogin();
                 break;
         }
     }
+
 
     @Override
     public BasePresenter<BaseView> createPresenter() {
