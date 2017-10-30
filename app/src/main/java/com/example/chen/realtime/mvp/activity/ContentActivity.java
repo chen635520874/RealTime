@@ -48,9 +48,9 @@ public class ContentActivity extends AppCompatActivity {
                 String url = intent.getStringExtra(Constants.KEY_URL);
                 replaceFragment(WebFragment.newInstance(url, title));
                 break;
-            }case Constants.LOGIN_FRAGMENT:
+            }/*case Constants.LOGIN_FRAGMENT:
                 replaceFragment(LoginFragment.newInstance());
-                break;
+                break;*/
             case Constants.ABOUT_FRAGMENT:
                 replaceFragment(AboutFragment.newInstance());
                 break;

@@ -27,13 +27,10 @@ public class LoginFragment extends SimpleFragment {
     TextView tvRight;
     @BindView(R.id.tvTitle)
     TextView tvTitle;
-    @BindView(R.id.etUsername)
-    EditText etUsername;
-    @BindView(R.id.etPassword)
-    EditText etPassword;
+
     @BindView(R.id.btnLogin)
     Button btnLogin;
-    @BindView(R.id.tvForgetPwd)
+
     TextView tvForgetPwd;
     @BindView(R.id.ivQQ)
     ImageView ivQQ;
@@ -67,7 +64,7 @@ public class LoginFragment extends SimpleFragment {
 
     }
 
-    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.btnLogin, R.id.tvForgetPwd, R.id.ivQQ, R.id.ivSina, R.id.ivWeixin})
+    @OnClick({R.id.ivLeft, R.id.tvRight, R.id.btnLogin,  R.id.ivQQ, R.id.ivSina, R.id.ivWeixin})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ivLeft:
@@ -78,9 +75,6 @@ public class LoginFragment extends SimpleFragment {
                 break;
             case R.id.btnLogin:
                 ToastUtils.showToast(context,R.string.login);
-                break;
-            case R.id.tvForgetPwd:
-                ToastUtils.showToast(context,R.string.forget_password);
                 break;
             case R.id.ivQQ:
                 Toast.makeText(context,"该功能暂未开放哟！",Toast.LENGTH_SHORT).show();

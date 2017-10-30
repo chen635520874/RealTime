@@ -38,6 +38,14 @@
         <activity android:name=".mvp.activity.RoomActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
+
+
+        <activity android:name=".register.Login" />
+        <activity android:name=".register.Register"
+            android:label="用户注册"/>
+        <activity android:name=".register.Resetpwd"
+            android:label="密码修改">
+    </activity>
     </application>
 <!--
 

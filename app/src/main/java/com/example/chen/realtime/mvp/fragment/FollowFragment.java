@@ -1,12 +1,16 @@
 package com.example.chen.realtime.mvp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chen.realtime.Constants;
 import com.example.chen.realtime.R;
+import com.example.chen.realtime.register.Login;
+import com.example.chen.realtime.register.Resetpwd;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -60,8 +64,9 @@ public class FollowFragment extends SimpleFragment {
                 startLogin();
                 break;
             case R.id.tvLogin:
-                startLogin();
-                break;
+                //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(),Login.class);
+                startActivity(intent);
         }
     }
 }
