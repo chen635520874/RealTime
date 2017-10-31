@@ -67,8 +67,8 @@ public class Login extends Activity {                 //登录界面活动
         mLoginButton.setOnClickListener(mListener);
         mCancleButton.setOnClickListener(mListener);
         mChangepwdText.setOnClickListener(mListener);
-
-        /*ImageView image = (ImageView) findViewById(R.id.logo);             //使用ImageView显示logo
+/*
+        ImageView image = (ImageView) findViewById(R.id.logo);             //使用ImageView显示logo
         image.setImageResource(R.drawable.logo);*/
 
         if (mUserDataManager == null) {
@@ -157,16 +157,6 @@ public class Login extends Activity {                 //登录界面活动
             return false;
         }
         return true;
-    }
-
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
-    }
-
-    public boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
     }
 
     @Override

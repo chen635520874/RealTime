@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.chen.realtime.LoginActivity;
+import com.example.chen.realtime.Login;
 import com.example.chen.realtime.R;
 
 import butterknife.BindView;
@@ -129,7 +129,7 @@ public class MineFragment extends SimpleFragment {
                 break;
             case R.id.btnLogin:
                 //startLogin();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), Login.class);
                 startActivity(intent);
 
                 break;

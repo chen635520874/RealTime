@@ -53,13 +53,10 @@
             android:name=".mvp.activity.RoomActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|stateUnchanged" />
-        <activity android:name=".Login" />
-        <activity android:name=".Register" />
-        <activity android:name=".Resetpwd" />
-        <activity android:name=".User" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+        <activity android:name=".Login"/>
+        <activity android:name=".Register"/>
+        <activity android:name=".Resetpwd"/>
+        <activity android:name=".User"/>
     </application>
 
 </manifest>

@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.example.chen.realtime.Constants;
 import com.example.chen.realtime.Login;
-import com.example.chen.realtime.LoginActivity;
 import com.example.chen.realtime.R;
 
 import butterknife.BindView;
