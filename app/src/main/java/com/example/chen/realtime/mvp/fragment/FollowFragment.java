@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.chen.realtime.Constants;
+import com.example.chen.realtime.Login;
+import com.example.chen.realtime.LoginActivity;
 import com.example.chen.realtime.R;
-import com.example.chen.realtime.register.Login;
-import com.example.chen.realtime.register.Resetpwd;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -20,6 +19,8 @@ import butterknife.OnClick;
  */
 
 public class FollowFragment extends SimpleFragment {
+
+
 
     @BindView(R.id.ivLeft)
     ImageView ivLeft;
@@ -65,8 +66,9 @@ public class FollowFragment extends SimpleFragment {
                 break;
             case R.id.tvLogin:
                 //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(),Login.class);
+                Intent intent = new Intent(getActivity(), Login.class);
                 startActivity(intent);
+                break;
         }
     }
 }

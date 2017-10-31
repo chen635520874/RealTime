@@ -9,18 +9,20 @@
     android:weightSum="1">
 
     <EditText
-        android:drawableLeft="@drawable/ic_user"
-        android:layout_width="fill_parent"
+        android:drawableLeft="@android:drawable/ic_menu_myplaces"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/resetpwd_edit_name"
-        android:hint="请输入您的用户名"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:hint="请输入您的用户名"
+        android:layout_alignLeft="@+id/resetpwd_edit_pwd_new"
+        android:layout_alignStart="@+id/resetpwd_edit_pwd_new"
+        android:layout_alignRight="@+id/resetpwd_edit_pwd_new"
+        android:layout_alignEnd="@+id/resetpwd_edit_pwd_new" />
 
     <!--
-    color:FF7A4D
 
     <EditText android:id="@+id/edt_operator_name" style="@style/syncEditText"
         android:hint="@string/hint_operator_name" />
@@ -31,15 +33,18 @@
 -->
 
     <EditText
-        android:drawableLeft="@drawable/ic_password"
+        android:drawableLeft="@android:drawable/ic_lock_idle_lock"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/resetpwd_edit_pwd_old"
-        android:hint="  请输入您的密码"
+        android:hint="请输入您的密码"
         android:layout_below="@+id/resetpwd_edit_name"
-        android:layout_alignParentStart="true" />
+        android:layout_alignRight="@+id/resetpwd_edit_name"
+        android:layout_alignEnd="@+id/resetpwd_edit_name"
+        android:layout_alignLeft="@+id/resetpwd_edit_name"
+        android:layout_alignStart="@+id/resetpwd_edit_name" />
 
     <Button
         android:layout_width="fill_parent"
@@ -47,15 +52,14 @@
         android:text="取消"
         android:id="@+id/register_btn_cancel"
         android:textSize="20dp"
-        android:background="@drawable/btn_login_selector"
+        android:background="#f71818"
         android:layout_below="@+id/register_btn_sure"
         android:layout_alignLeft="@+id/register_btn_sure"
         android:layout_alignStart="@+id/register_btn_sure"
-        android:textColor="@color/white"
         android:layout_marginTop="10dp" />
 
     <EditText
-        android:drawableLeft="@drawable/ic_sure_password"
+        android:drawableLeft="@android:drawable/ic_lock_idle_lock"
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:inputType="textPassword"
@@ -71,8 +75,7 @@
         android:text="确定"
         android:id="@+id/register_btn_sure"
         android:textSize="20dp"
-        android:textColor="@color/white"
-        android:background="@drawable/btn_login_selector"
+        android:background="#1cf718"
         android:layout_below="@+id/resetpwd_edit_pwd_new"
         android:layout_alignLeft="@+id/resetpwd_edit_pwd_new"
         android:layout_alignStart="@+id/resetpwd_edit_pwd_new"

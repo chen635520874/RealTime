@@ -1,4 +1,4 @@
-package com.example.chen.realtime.register;
+package com.example.chen.realtime;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,9 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.chen.realtime.R;
-import com.example.chen.realtime.mvp.fragment.HomeFragment;
 
 public class Login extends Activity {                 //登录界面活动
 
@@ -46,7 +43,7 @@ public class Login extends Activity {                 //登录界面活动
         mRegisterButton = (Button) findViewById(R.id.login_btn_register);
         mLoginButton = (Button) findViewById(R.id.login_btn_login);
         mCancleButton = (Button) findViewById(R.id.login_btn_cancle);
-        //loginView=findViewById(R.id.login_view);
+        loginView=findViewById(R.id.login_view);
         loginSuccessView=findViewById(R.id.login_success_view);
         loginSuccessShow=(TextView) findViewById(R.id.login_success_show);
 
@@ -121,7 +118,7 @@ public class Login extends Activity {                 //登录界面活动
                 }
                 editor.commit();
 
-                Intent intent = new Intent(Login.this,HomeFragment.class) ;    //切换Login Activity至User Activity
+                Intent intent = new Intent(Login.this,User.class) ;    //切换Login Activity至User Activity
                 startActivity(intent);
                 finish();
                 Toast.makeText(this, getString(R.string.login_success),Toast.LENGTH_SHORT).show();//登录成功提示
@@ -160,6 +157,16 @@ public class Login extends Activity {                 //登录界面活动
             return false;
         }
         return true;
+    }
+
+    private boolean isEmailValid(String email) {
+        //TODO: Replace this with your own logic
+        return email.contains("@");
+    }
+
+    public boolean isPasswordValid(String password) {
+        //TODO: Replace this with your own logic
+        return password.length() > 4;
     }
 
     @Override

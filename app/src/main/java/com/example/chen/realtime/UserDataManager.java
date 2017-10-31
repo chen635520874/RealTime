@@ -1,20 +1,16 @@
-package com.example.chen.realtime.register;
-
+package com.example.chen.realtime;
+/**
+ * Created by FoolishFan on 2016/7/14.主要是用户信息的管理操作
+ */
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by Administrator on 2017/10/30.
- */
-
-public class UserDataManager {
-
+public class UserDataManager {             //用户数据管理类
     //一些宏定义和声明
     private static final String TAG = "UserDataManager";
     private static final String DB_NAME = "user_data";
@@ -22,43 +18,38 @@ public class UserDataManager {
     public static final String ID = "_id";
     public static final String USER_NAME = "user_name";
     public static final String USER_PWD = "user_pwd";
-    //    public static final String SILENT = "silent";
+//    public static final String SILENT = "silent";
 //    public static final String VIBRATE = "vibrate";
     private static final int DB_VERSION = 2;
     private Context mContext = null;
 
-    //创建用户Book表
-
-    private static final  String DB_CREATE  = "CREATE TABLE"+TABLE_NAME+"("
-            +ID+"integer primary key," + USER_NAME+"varchar,"
-            +USER_PWD+"varchar"+");";
+    //创建用户book表
+    private static final String DB_CREATE = "CREATE TABLE " + TABLE_NAME + " ("
+            + ID + " integer primary key," + USER_NAME + " varchar,"
+            + USER_PWD + " varchar" + ");";
 
     private SQLiteDatabase mSQLiteDatabase = null;
     private DataBaseManagementHelper mDatabaseHelper = null;
 
-    private static class DataBaseManagementHelper extends SQLiteOpenHelper{
-
-        public DataBaseManagementHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-            super(context, name, factory, version);
-        }
+    //DataBaseManagementHelper继承自SQLiteOpenHelper
+    private static class DataBaseManagementHelper extends SQLiteOpenHelper {
 
         DataBaseManagementHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
         }
 
-
         @Override
         public void onCreate(SQLiteDatabase db) {
             Log.i(TAG,"db.getVersion()="+db.getVersion());
-            db.execSQL("DROP TABLE IF EXIT"+TABLE_NAME+";");
-            db.execSQL(DB_NAME);
-            Log.i(TAG,"db.execSQL(DB_CREATE)");
-            Log.i(TAG,DB_CREATE);
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME + ";");
+            db.execSQL(DB_CREATE);
+            Log.i(TAG, "db.execSQL(DB_CREATE)");
+            Log.e(TAG, DB_CREATE);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.i(TAG,"DataBaseManagementHelper onUpgrade");
+            Log.i(TAG, "DataBaseManagementHelper onUpgrade");
             onCreate(db);
         }
     }

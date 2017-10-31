@@ -1,4 +1,4 @@
-package com.example.chen.realtime.register;
+package com.example.chen.realtime;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.example.chen.realtime.R;
-import com.example.chen.realtime.mvp.fragment.LoginFragment;
-
-/**
- * Created by Administrator on 2017/10/30.
- */
 
 public class Register extends AppCompatActivity {
     private EditText mAccount;                        //用户名编辑
@@ -49,7 +42,7 @@ public class Register extends AppCompatActivity {
                     register_check();
                     break;
                 case R.id.register_btn_cancel:                     //取消按钮的监听事件,由注册界面返回登录界面
-                    Intent intent_Register_to_Login = new Intent(Register.this,LoginFragment.class) ;    //切换User Activity至Login Activity
+                    Intent intent_Register_to_Login = new Intent(Register.this,Login.class) ;    //切换User Activity至Login Activity
                     startActivity(intent_Register_to_Login);
                     finish();
                     break;
@@ -79,7 +72,7 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(this, getString(R.string.register_fail),Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(this, getString(R.string.register_success),Toast.LENGTH_SHORT).show();
-                    Intent intent_Register_to_Login = new Intent(Register.this,LoginFragment.class) ;    //切换User Activity至Login Activity
+                    Intent intent_Register_to_Login = new Intent(Register.this,Login.class) ;    //切换User Activity至Login Activity
                     startActivity(intent_Register_to_Login);
                     finish();
                 }
